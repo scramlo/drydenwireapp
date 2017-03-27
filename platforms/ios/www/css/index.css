@@ -75,12 +75,16 @@ aside:last-of-type ul li.active {
   color:white;
 }
 
-button {
+button, .btn-primary, .btn-default, .btn-success, .btn-info {
   border-radius:0;
   padding:2%;
   border:none;
   color:white;
   font-size:1.1rem;
+}
+
+.btn-default {
+  color: #373A3C;
 }
 
 .btn-primary {
@@ -99,4 +103,23 @@ img {
 
 iframe {
   max-width: 100%;
+}
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #C41900;
+  margin: 1.5em 0px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote:before {
+  color: #C41900;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
 }
