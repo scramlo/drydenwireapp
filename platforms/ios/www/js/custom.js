@@ -40,16 +40,6 @@ function hideWindow() {
 
 /*
 ==========================================
-SHARED EVENT HANDLERS
-==========================================
-*/
-
-$("#load-more-button").on("click", function() {
-  getArticles(articlesRetrieveStart)
-});
-
-/*
-==========================================
 ARTICLES
 ==========================================
 */
@@ -65,6 +55,9 @@ var articlesListHTML = "";
 //this will contain the body of the articles
 var articlesBodyArray = [];
 
+//this counts how many articles are pulled in so we put in the right IDs.
+var articleCount = 0;
+
 //base articles API address
 var articlesJSON = "http://drydenwire.com/api/json-articles/";
 
@@ -73,11 +66,24 @@ var articlesJSON = "http://drydenwire.com/api/json-articles/";
 //articles from the next ten.
 var articlesRetrieveStart = 0;
 
+//This will take in the current scroll coordinates in the articles list.
+//When a single article is displayed, the window is scrolled to the top.
+//But when that single article is hidden and you now see the articles list
+//You'll would be at the bottom.
+var scrollLocationX;
+var scrollLocationY;
+
 //start the app by getting the articles
 getArticles(articlesRetrieveStart);
 
 //Create get articles function
 function getArticles(startArticle) {
+
+  //hide articles-list on app start
+  //so we can control how long to show the loader for a good UI experience
+  if (articlesRetrieveStart === 0) {
+    $("#articles-list").hide();
+  }
 
   //Show loading spinner
   $("#spinner").show();
@@ -119,17 +125,28 @@ function getArticles(startArticle) {
         //add the full URL path to body images. Can't automate this in ProcessWire
         var articleBody = articleBody.replace(/\/site/g, "http://drydenwire.com/site");
 
+        //easily control the animation here
+        var animated = " animated bounceInLeft' style='animation-delay:" + articlesDelaySeconds + "s;";
+
+        //I'm going to only allow animations to occur the first load.
+        if (articlesRetrieveStart > 0) {
+          animated = "";
+        }
+
         //This is a card style layout for the articles list.
         //It is pushed to an array which will be joined together as HTML.
-        articlesListHTMLArr.push("<div class='card animated bounceInLeft' style='animation-delay:" + articlesDelaySeconds + "s;'>"); //0
+        articlesListHTMLArr.push("<div class='card" + animated + "'>"); //0
         articlesDelaySeconds += 0.2; //didn't want to forget to iterate :)
         articlesListHTMLArr.push("<img class='card-img-top' src='" + articleImageURL + "'>"); //1
         articlesListHTMLArr.push("<div class='card-block'>"); //2
         articlesListHTMLArr.push("<small>" + articleDate + "</small>"); //3
         articlesListHTMLArr.push("<h4 class='card-title'>" + articleTitle + "</h4>"); //4
-        articlesListHTMLArr.push("<button onclick='showArticle(" + i + ")' class='btn-primary btn-block article-button'>View Article</button>"); //5
+        articlesListHTMLArr.push("<button onclick='showArticle(" + articleCount + ")' class='btn-primary btn-block article-button'>View Article</button>"); //5
         articlesListHTMLArr.push("</div><!--End Card Block -->"); //6
         articlesListHTMLArr.push("</div><!--End Card -->"); //7
+
+        //increment article count
+        articleCount++;
 
         //push article head and body to single article array
         articlesBodyArray.push(
@@ -144,8 +161,11 @@ function getArticles(startArticle) {
 
       //fill articles list container and hide spinner
       $("#articles-list").html(articlesListHTML);
-      $("#spinner").fadeOut();
-      $("#button-section").show();
+      $("#spinner").fadeOut(function() {
+        $("#articles-list").show();
+        $("#load-articles-button").show();
+        $("#button-section").show();
+      });
 
       //up the retrieveCount counter
       articlesRetrieveStart += 10;
@@ -155,19 +175,37 @@ function getArticles(startArticle) {
   }); // End AJAX
 }
 
+/* ARTICLES EVENT HANDLERS */
+
+$("#load-articles-button").on("click", function() {
+  $(this).hide(0, function() {
+    getArticles(articlesRetrieveStart);
+  });
+});
+
+$("#show-articles-button").on("click", function() {
+  showArticles();
+});
+
+/* ARTICLES FUNCTIONS */
+
 function showArticle(id) {
+  scrollLocationX = window.pageXOffset || document.documentElement.scrollLeft;
+  scrollLocationY  = window.pageYOffset || document.documentElement.scrollTop;
   $("#articles-single").html(articlesBodyArray[id]);
   $("#articles-list").hide();
+  window.scroll(0,0);
   $("#articles-single").show();
-  $("#load-more-button").hide();
+  $("#load-articles-button").hide();
   $("#show-articles-button").show();
 }
 
 function showArticles() {
-  hideWindow();
+  $("#articles-single").hide();
   $("#show-articles-button").hide();
   $("#articles-list").show();
-  $("#load-more-button").show();
+  $("#load-articles-button").show();
+  window.scroll(scrollLocationX, scrollLocationY);
 }
 
 /*
@@ -273,5 +311,5 @@ function showObituaries() {
   hideWindow();
   $("#show-obituaries-button").hide();
   $("#obituaries-window").html(obituariesWindowHTML);
-  $("#load-more-button").show();
+  $("#load-articles-button").show();
 }
