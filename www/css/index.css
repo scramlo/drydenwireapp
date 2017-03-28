@@ -186,6 +186,7 @@ body {
   padding-top:10vh;
 }
 
+/*
 aside:first-of-type {
   position:fixed;
   top:0;
@@ -199,6 +200,7 @@ aside:first-of-type {
   justify-content:center;
   align-items:center;
 }
+*/
 
 aside:last-of-type {
   position:fixed;

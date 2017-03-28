@@ -88,11 +88,6 @@ function getArticles(startArticle) {
   //Show loading spinner
   $("#spinner").show();
 
-  //erase animated class for existing articles
-  for (var i = 0; i < articlesListHTMLArr.length; i++) {
-    articlesListHTMLArr[i] = articlesListHTMLArr[i].replace(/animated bounceInLeft/g, "");
-  }
-
   //This is a counter to make the slide ins "waterfall"
   var articlesDelaySeconds = 0;
 
@@ -108,7 +103,7 @@ function getArticles(startArticle) {
     },
     url: articlesJSON,
     success: function(json) {
-      //console.log(json);
+      console.log(json);
 
       //number of articles
       articlesCount = Object.keys(json).length;
@@ -128,8 +123,8 @@ function getArticles(startArticle) {
         //easily control the animation here
         var animated = " animated bounceInLeft' style='animation-delay:" + articlesDelaySeconds + "s;";
 
-        //I'm going to only allow animations to occur the first load.
-        if (articlesRetrieveStart > 0) {
+        //I'm turning off animations right now.
+        if ("Brian" !== "Awesome") {
           animated = "";
         }
 
