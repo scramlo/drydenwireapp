@@ -52,8 +52,8 @@
       <!-- Bottom Navigation Bar -->
       <aside id="bottom-navigation">
         <ul>
-          <li class="active"><p id="articles-button"><i class="fa fa-newspaper-o"></i><br><span>Articles</span></p></li>
-          <li><p id="obituaries-button"><i class="fa fa-institution"></i><br><span>Obituaries</span></p></li>
+          <li id="articles-button" class="active"><p><i class="fa fa-newspaper-o"></i><br><span>Articles</span></p></li>
+          <li id="obituaries-button"><p><i class="fa fa-institution"></i><br><span>Obituaries</span></p></li>
           <li><p><i class="fa fa-money"></i><br><span>Advertise</span></p></li>
           <li><p><i class="fa fa-paper-plane-o"></i><br><span>Submit</span></p></li>
         </ul>
@@ -61,7 +61,12 @@
 
       <!-- Placeholders for JavaScript to fill -->
       <main id="articles-window"></main>
-      <main id="calendar-window"></main>
+      <section id="button-section" style="display:none" >
+        <button id="load-more-button" class="btn btn-success btn-block" onclick="getArticles(articlesRetrieveStart);">Load More</button>
+        <button style="display:none;" id="show-articles-button" class="btn btn-success btn-block" onclick="showArticles();">Back to Articles</button>
+        <br>
+      </section>
+      <main id="obituaries-window"></main>
       <main id="newsletter-window"></main>
       <main id="more-window"></main>
     </div>
