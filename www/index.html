@@ -60,12 +60,16 @@
       </aside>
 
       <!-- Placeholders for JavaScript to fill -->
-      <main id="articles-window"></main>
-      <section id="button-section" style="display:none" >
-        <button id="load-more-button" class="btn btn-success btn-block" onclick="getArticles(articlesRetrieveStart);">Load More</button>
-        <button style="display:none;" id="show-articles-button" class="btn btn-success btn-block" onclick="showArticles();">Back to Articles</button>
-        <br>
-      </section>
+      <main id="articles-window">
+        <section id="articles-list"></section>
+        <section id="articles-single"></section>
+        <div id="spinner"></div>
+        <section id="button-section" style="display:none" >
+          <button id="load-more-button" class="btn btn-success btn-block">Load More</button>
+          <button id="show-articles-button" class="btn btn-success btn-block" onclick="showArticles();">Back to Articles</button>
+          <br>
+        </section>
+      </main>
       <main id="obituaries-window"></main>
       <main id="newsletter-window"></main>
       <main id="more-window"></main>

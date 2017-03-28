@@ -22,7 +22,8 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "cordova-plugin-vibration": "2.1.1"
+    "cordova-plugin-vibration": "2.1.1",
+    "cordova-plugin-disable-nsapptransportsecurity": "1.0.2"
 }
 // BOTTOM OF METADATA
 });

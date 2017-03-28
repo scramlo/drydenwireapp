@@ -158,5 +158,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-disable-nsapptransportsecurity": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-disable-nsapptransportsecurity"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

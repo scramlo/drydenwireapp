@@ -26,7 +26,7 @@ $("#obituaries-button").on("click", function() {
 
 /*
 ==========================================
-COMMON FUNCTIONS
+SHARED FUNCTIONS
 ==========================================
 */
 
@@ -35,9 +35,18 @@ function hideWindow() {
   $("#obituaries-window").hide();
   $("#advertise-window").hide();
   $("#submit-window").hide();
-  $("#button-section").hide();
   window.scrollTo(0,0);
 }
+
+/*
+==========================================
+SHARED EVENT HANDLERS
+==========================================
+*/
+
+$("#load-more-button").on("click", function() {
+  getArticles(articlesRetrieveStart)
+});
 
 /*
 ==========================================
@@ -48,19 +57,13 @@ ARTICLES
 var articlesCount;
 
 //this will contain the articles window html markup array
-var articlesWindowHTMLArr = [];
+var articlesListHTMLArr = [];
 
 //this will contain the articles window html markup concantenated
-var articlesWindowHTML = "";
+var articlesListHTML = "";
 
 //this will contain the body of the articles
 var articlesBodyArray = [];
-
-//This will contain arrays of sermon lists for each series.
-var articlesListArray = [];
-
-//This is a counter to make the slide ins "waterfall"
-var articlesDelaySeconds = 0;
 
 //base articles API address
 var articlesJSON = "http://drydenwire.com/api/json-articles/";
@@ -75,6 +78,22 @@ getArticles(articlesRetrieveStart);
 
 //Create get articles function
 function getArticles(startArticle) {
+
+  //Show loading spinner
+  $("#spinner").show();
+
+  //erase animated class for existing articles
+  for (var i = 0; i < articlesListHTMLArr.length; i++) {
+    articlesListHTMLArr[i] = articlesListHTMLArr[i].replace(/animated bounceInLeft/g, "");
+  }
+
+  //This is a counter to make the slide ins "waterfall"
+  var articlesDelaySeconds = 0;
+
+  //hide show-articles-button ... this should only be seen on a single article
+  $("#show-articles-button").hide();
+
+  //AJAX Call
   $.ajax({
     dataType: "json",
     type: "POST",
@@ -102,15 +121,15 @@ function getArticles(startArticle) {
 
         //This is a card style layout for the articles list.
         //It is pushed to an array which will be joined together as HTML.
-        articlesWindowHTMLArr.push("<div class='card animated bounceInLeft' style='animation-delay:" + articlesDelaySeconds + "s;'>"); //0
-        articlesDelaySeconds += 0.3; //didn't want to forget to iterate :)
-        articlesWindowHTMLArr.push("<img class='card-img-top' src='" + articleImageURL + "'>"); //1
-        articlesWindowHTMLArr.push("<div class='card-block'>"); //2
-        articlesWindowHTMLArr.push("<small>" + articleDate + "</small>"); //3
-        articlesWindowHTMLArr.push("<h4 class='card-title'>" + articleTitle + "</h4>"); //4
-        articlesWindowHTMLArr.push("<button onclick='showArticle(" + i + ")' class='btn-primary btn-block article-button'>View Article</button>"); //5
-        articlesWindowHTMLArr.push("</div><!--End Card Block -->"); //6
-        articlesWindowHTMLArr.push("</div><!--End Card -->"); //7
+        articlesListHTMLArr.push("<div class='card animated bounceInLeft' style='animation-delay:" + articlesDelaySeconds + "s;'>"); //0
+        articlesDelaySeconds += 0.2; //didn't want to forget to iterate :)
+        articlesListHTMLArr.push("<img class='card-img-top' src='" + articleImageURL + "'>"); //1
+        articlesListHTMLArr.push("<div class='card-block'>"); //2
+        articlesListHTMLArr.push("<small>" + articleDate + "</small>"); //3
+        articlesListHTMLArr.push("<h4 class='card-title'>" + articleTitle + "</h4>"); //4
+        articlesListHTMLArr.push("<button onclick='showArticle(" + i + ")' class='btn-primary btn-block article-button'>View Article</button>"); //5
+        articlesListHTMLArr.push("</div><!--End Card Block -->"); //6
+        articlesListHTMLArr.push("</div><!--End Card -->"); //7
 
         //push article head and body to single article array
         articlesBodyArray.push(
@@ -120,13 +139,12 @@ function getArticles(startArticle) {
         );
       } //End for each loop
 
-      //articlesWindowHTMLArr.push("<section id=\"load-more-section\"><button id=\"load-more-button\" class=\"btn btn-success btn-block\" onclick=\"getArticles(retrieveStart);\">Load More</button><br></section>");
-
       //Join the array together.
-      articlesWindowHTML = articlesWindowHTMLArr.join("");//
+      articlesListHTML = articlesListHTMLArr.join("");//
 
-      // fill screen
-      $("#articles-window").html(articlesWindowHTML);
+      //fill articles list container and hide spinner
+      $("#articles-list").html(articlesListHTML);
+      $("#spinner").fadeOut();
       $("#button-section").show();
 
       //up the retrieveCount counter
@@ -138,19 +156,17 @@ function getArticles(startArticle) {
 }
 
 function showArticle(id) {
-  hideWindow();
-  $("#articles-window").html(articlesBodyArray[id]);
-  $("#articles-window").show();
+  $("#articles-single").html(articlesBodyArray[id]);
+  $("#articles-list").hide();
+  $("#articles-single").show();
   $("#load-more-button").hide();
   $("#show-articles-button").show();
-  $("#button-section").show();
 }
 
 function showArticles() {
   hideWindow();
   $("#show-articles-button").hide();
-  $("#articles-window").html(articlesWindowHTML);
-  $("#articles-window").show();
+  $("#articles-list").show();
   $("#load-more-button").show();
 }
 
@@ -171,12 +187,6 @@ var obituariesWindowHTML = "";
 //this will contain the body of the obituaries
 var obituariesBodyArray = [];
 
-//This will contain arrays of sermon lists for each series.
-var obituariesListArray = [];
-
-//This is a counter to make the slide ins "waterfall"
-var obituariesDelaySeconds = 0;
-
 //base obituaries API address
 var obituariesJSON = "http://drydenwire.com/api/json-obituaries/";
 
@@ -187,6 +197,9 @@ var obitsRetrieveStart = 0;
 
 //Create get obituaries function
 function getObituaries(startobituary) {
+
+  $("#spinner").show();
+
   $.ajax({
     dataType: "json",
     type: "POST",
@@ -199,6 +212,9 @@ function getObituaries(startobituary) {
 
       //number of obituaries
       obituariesCount = Object.keys(json).length;
+
+      //This is a counter to make the slide ins "waterfall"
+      var obituariesDelaySeconds = 0;
 
       //iterate through each series
       for (var i = 0; i < obituariesCount; i++) {
@@ -236,6 +252,7 @@ function getObituaries(startobituary) {
       obituariesWindowHTML = obituariesWindowHTMLArr.join("");//
 
       //fill screen
+      $("#spinner").fadeOut();
       $("#obituaries-window").html(obituariesWindowHTML);
 
       //up the retrieveCount counter

@@ -9,6 +9,9 @@
     "installed_plugins": {
         "cordova-plugin-vibration": {
             "PACKAGE_NAME": "com.newjourneycommunity.app"
+        },
+        "cordova-plugin-disable-nsapptransportsecurity": {
+            "PACKAGE_NAME": "com.newjourneycommunity.app"
         }
     },
     "dependent_plugins": {},
@@ -33,6 +36,7 @@
         }
     ],
     "plugin_metadata": {
-        "cordova-plugin-vibration": "2.1.1"
+        "cordova-plugin-vibration": "2.1.1",
+        "cordova-plugin-disable-nsapptransportsecurity": "1.0.2"
     }
 }
