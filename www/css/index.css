@@ -186,7 +186,6 @@ body {
   padding-top:10vh;
 }
 
-/*
 aside:first-of-type {
   position:fixed;
   top:0;
@@ -200,7 +199,6 @@ aside:first-of-type {
   justify-content:center;
   align-items:center;
 }
-*/
 
 aside:last-of-type {
   position:fixed;
@@ -259,10 +257,6 @@ button, .btn-primary, .btn-default, .btn-success, .btn-info {
   display:block;
 }
 
-#button-section {
-  margin: 3rem 0rem;
-}
-
 img, iframe {
   max-width:100%;
   height:auto;
@@ -275,6 +269,7 @@ blockquote {
   padding: 0.5em 10px;
   quotes: "\201C""\201D""\2018""\2019";
 }
+
 blockquote:before {
   color: #C41900;
   content: open-quote;
@@ -283,6 +278,7 @@ blockquote:before {
   margin-right: 0.25em;
   vertical-align: -0.4em;
 }
+
 blockquote p {
   display: inline;
 }

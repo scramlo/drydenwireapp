@@ -34,6 +34,13 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        
+        //utilize cordova inappbrowser for all anchors.
+        $("a").on("click", function(e) {
+           e.preventDefault;
+           var location = $(this).attr("href");
+           cordova.InAppBrowser.open("'" + href + "'", '_blank', 'location=yes');
+        });
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
